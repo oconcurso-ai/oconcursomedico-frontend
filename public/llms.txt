@@ -1,0 +1,12 @@
+# O Concurso Médico
+
+> O Concurso Médico é a principal plataforma brasileira especializada em mapear, listar e divulgar concursos públicos, editais, vagas e oportunidades de trabalho para médicos em todos os municípios e estados do Brasil.
+
+## Navegação Principal
+
+- [Notícias e Concursos Abertos](http://localhost:5173/#/home): Acompanhe notícias atualizadas sobre seleções, inscrições abertas, retificações e salários de médicos.
+- [Buscar Concursos Médicos](http://localhost:5173/#/concursos): Filtre concursos por estado (UF), cidade, banca organizadora, especialidade médica, carga horária e remuneração.
+- [Atendimento e Contato](http://localhost:5173/#/contato): Fale com a equipe responsável via WhatsApp ou E-mail.
+
+## Recursos para Agentes e LLMs
+- [Documentação Completa (llms-full.txt)](http://localhost:5173/llms-full.txt): Informações detalhadas, estrutura de dados e especificações para modelos de linguagem e assistentes virtuais.

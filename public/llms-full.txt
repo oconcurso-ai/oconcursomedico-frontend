@@ -1,0 +1,17 @@
+# O Concurso Médico - Guia Completo para Agentes de IA
+
+O Concurso Médico publica informações verificadas sobre concursos públicos na área da saúde e medicina em todo o território nacional brasileiro.
+
+## Estrutura dos Dados de Concurso
+
+Cada concurso público médico possui as seguintes propriedades principais:
+- **Cidade e Estado (UF)**: Localização da oportunidade.
+- **Banca Organizadora**: Instituição responsável pela realização da prova (ex.: Cebraspe, Vunesp, FGV, IBFC).
+- **Vagas**: Quantidade de vagas imediatas ou cadastro de reserva.
+- **Remuneração**: Valor nominal inicial da vaga (R$).
+- **Carga Horária**: Horas semanais exigidas (ex.: 20h, 40h, plantões de 12x36).
+- **Status do Concurso**: Inscrições Abertas, Acaba Hoje, Prorrogadas, Previsto ou Encerrado.
+
+## Contato Oficial
+- WhatsApp: +55 (21) 96713-7756
+- E-mail: contato@oconcursomedico.com
