@@ -25,7 +25,7 @@ export const homePage = {
 
     <section id="homeNewsGrid" class="news-grid" aria-label="Notícias em Destaque sobre Concursos Médicos">
       ${featuredNews ? `
-      <a href="#/noticia/${featuredNews.id}" class="news-card-big" style="position: relative; overflow: hidden; text-decoration: none; color: inherit;">
+      <a href="#/noticia/${featuredNews.id}" class="news-card-big" style="position: relative; overflow: hidden; text-decoration: none; color: #fff;">
         <img src="${featuredNews.image}" alt="${featuredNews.imageAlt}" width="800" height="400" fetchpriority="high" decoding="async" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
         <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,79,73,0.95), rgba(15,79,73,0.15)); z-index: 2; pointer-events: none;"></div>
         <h2 style="position: relative; z-index: 3; text-transform: uppercase;">ATENÇÃO!<br>CONCURSO<br>MÉDICO:<br>${featuredNews.cidade} (${featuredNews.uf}):<br>${featuredNews.title.split(':').pop()}</h2>
