@@ -1,14 +1,21 @@
-import { carregarDados } from '../js/api.js'
+import { carregarDados, carregarNoticias } from '../js/api.js'
 import { DATA_FALLBACK, STATUS_STYLE, STATUS_ORDER, renderCardHTML, SKELETON_CARDS_HTML, currency } from '../js/data.js'
 import { NEWS_DATA } from '../js/news-data.js'
 import { searchDocs } from '../js/search.js'
 
 export const homePage = {
   _allConcursos: [],
+  _allNoticias: [],  // notícias carregadas da API (ou fallback)
 
   render() {
-    const featuredNews = NEWS_DATA.find(n => n.featured)
-    const otherNews = NEWS_DATA.filter(n => !n.featured).slice(0, 4)
+    // Durante o render inicial usamos os dados já carregados ou o fallback estático.
+    // O mount() faz o carregamento real da API e re-renderiza os grids.
+    const liveFeatured = this._allNoticias.find(n => n.featured)
+    const liveOthers   = this._allNoticias.filter(n => !n.featured && n.publicada).slice(0, 4)
+
+    // Se ainda não temos dados da API, cai para o fallback estático
+    const featuredNews = liveFeatured || NEWS_DATA.find(n => n.featured)
+    const otherNews    = liveOthers.length ? liveOthers : NEWS_DATA.filter(n => !n.featured).slice(0, 4)
 
     return `
     <div class="page-enter">
@@ -81,94 +88,92 @@ export const homePage = {
 
   mount() {
     const $searchInput = $('#newsSearchInput')
-    const $newsGrid = $('#homeNewsGrid')
-    
-    // Store original grid html to restore if search is empty
+    const $newsGrid    = $('#homeNewsGrid')
     const originalGridHtml = $newsGrid.html()
+    const self = this
+
+    function renderNewsCard(n) {
+      const href = '#/noticia/' + n.id
+      const img  = n.image || '/assets/news1.webp'
+      const alt  = n.imageAlt || n.title
+      return `
+      <a href="${href}" class="news-card-small" style="text-decoration: none; color: inherit;">
+        <div class="news-card-small-img" role="img" style="background: url('${img}') center/cover;" aria-label="${alt}"></div>
+        <div class="news-card-small-content">
+          <span class="news-tag">NOTÍCIAS</span>
+          <h3>${n.title}</h3>
+          <time class="date" datetime="${n.date}">${n.dateLabel}</time>
+        </div>
+      </a>`
+    }
+
+    function renderFeaturedCard(n) {
+      const href = '#/noticia/' + n.id
+      const img  = n.image || '/assets/news_big_card.webp'
+      return `
+      <a href="${href}" class="news-card-big" style="position:relative;overflow:hidden;text-decoration:none;color:#fff;">
+        <img src="${img}" alt="${n.imageAlt || n.title}" width="800" height="400" fetchpriority="high" decoding="async"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(15,79,73,0.95),rgba(15,79,73,0.15));z-index:2;pointer-events:none;"></div>
+        <h2 style="position:relative;z-index:3;text-transform:uppercase;">ATENÇÃO!<br>CONCURSO<br>MÉDICO:<br>${n.title}</h2>
+      </a>`
+    }
+
+    function renderNewsGrid(noticias) {
+      const featured = noticias.find(n => n.featured && n.publicada)
+      const others   = noticias.filter(n => !n.featured && n.publicada).slice(0, 4)
+      let html = ''
+      if (featured) html += renderFeaturedCard(featured)
+      html += others.map(renderNewsCard).join('')
+      if (html) $newsGrid.html(html)
+    }
 
     function performNewsSearch() {
       const q = $searchInput.val().trim()
-      if (!q) {
-        $newsGrid.html(originalGridHtml)
+      if (!q) { $newsGrid.html(originalGridHtml); return }
+
+      // Busca nas notícias da API (ou fallback)
+      const corpus = self._allNoticias.length ? self._allNoticias : NEWS_DATA
+      const results = searchDocs(corpus, q, { limit: 6, minScore: 1 })
+
+      if (!results.length) {
+        $newsGrid.html('<p style="grid-column:1/-1;text-align:center;color:var(--text-gray);font-size:18px;padding:40px 0;">Nenhuma notícia encontrada para "' + q + '".</p>')
         return
       }
 
-      // Search only on NEWS_DATA with our advanced search function
-      const results = searchDocs(NEWS_DATA, q, { limit: 6, minScore: 1 })
-      
-      if (results.length === 0) {
-        $newsGrid.html('<p style="grid-column: 1/-1; text-align: center; color: var(--text-gray); font-size: 18px; padding: 40px 0;">Nenhuma notícia encontrada para "' + q + '".</p>')
-        return
-      }
-
-      const html = results.map(({doc}) => `
-      <a href="#/noticia/${doc.id}" class="news-card-small" style="text-decoration: none; color: inherit;">
-        <div class="news-card-small-img" role="img" style="background: url('${doc.image}') center/cover;" aria-label="${doc.imageAlt}"></div>
-        <div class="news-card-small-content">
-          <span class="news-tag">NOTÍCIAS</span>
-          <h3>${doc.title}</h3>
-          <time class="date" datetime="${doc.date}">${doc.dateLabel}</time>
-        </div>
-      </a>
-      `).join('')
-
-      $newsGrid.html(html)
+      $newsGrid.html(results.map(({doc}) => renderNewsCard(doc)).join(''))
     }
 
-    // Trigger search directly within news grid when clicking button
-    $('#newsSearchBtn').on('click', function () {
-      performNewsSearch()
-    })
-
-    // Also search when typing Enter
-    $searchInput.on('keydown', function (e) {
-      if (e.key === 'Enter') {
-        performNewsSearch()
-      }
-    })
+    $('#newsSearchBtn').on('click', performNewsSearch)
+    $searchInput.on('keydown', e => { if (e.key === 'Enter') performNewsSearch() })
 
     $('#loadMoreNews').on('click', function () {
-      const grid = $('#homeNewsGrid')
-      const $template = grid.find('.news-card-small').first()
-      if (!$template.length) return
-
-      const newsImages = [
-        '/assets/news1.webp',
-        '/assets/news2.webp',
-        '/assets/news3.webp',
-        '/assets/news_ponto_chique.webp'
-      ]
-
-      const currentNewsDate = new Date()
-      const dateOptions = { day: '2-digit', month: 'long', year: 'numeric' }
-
-      for (let i = 0; i < 4; i++) {
-        currentNewsDate.setDate(currentNewsDate.getDate() - 1)
-        const dateStr = currentNewsDate.toLocaleDateString('pt-BR', dateOptions)
-        const $newCard = $template.clone()
-        
-        $newCard.find('.date').text(dateStr)
-        $newCard.find('h3').text('Atualização sobre Concursos Médicos — ' + dateStr)
-        
-        const randomImg = newsImages[Math.floor(Math.random() * newsImages.length)]
-        $newCard.find('.news-card-small-img').css('background', `url('${randomImg}') center/cover`)
-        $newCard.attr('href', '#') // Mock data sem navegação real
-        $newCard.css({ opacity: 0, display: 'flex' })
-        
-        grid.append($newCard)
-        $newCard.animate({ opacity: 1 }, 300)
-      }
+      const corpus = self._allNoticias.length ? self._allNoticias.filter(n => n.publicada) : NEWS_DATA
+      const showing = $newsGrid.find('.news-card-small').length
+      const extras  = corpus.slice(showing, showing + 4)
+      if (!extras.length) { $(this).hide(); return }
+      extras.forEach(n => {
+        const $card = $(renderNewsCard(n)).css({ opacity: 0, display: 'flex' })
+        $newsGrid.append($card)
+        $card.animate({ opacity: 1 }, 300)
+      })
+      if (showing + extras.length >= corpus.length) $(this).hide()
     })
 
+    // ── Carrega concursos ──────────────────────────────────────────────
     carregarDados()
-      .then(data => {
-        this._allConcursos = data
-        this.renderHomeConcursos(data)
+      .then(data => { self._allConcursos = data; self.renderHomeConcursos(data) })
+      .catch(err  => { console.error('[API] Concursos:', err); self._allConcursos = DATA_FALLBACK; self.renderHomeConcursos(DATA_FALLBACK) })
+
+    // ── Carrega notícias da API ────────────────────────────────────────
+    carregarNoticias()
+      .then(noticias => {
+        self._allNoticias = noticias
+        renderNewsGrid(noticias)
       })
       .catch(err => {
-        console.error("[API] Falha ao carregar dados:", err)
-        this._allConcursos = DATA_FALLBACK
-        this.renderHomeConcursos(DATA_FALLBACK)
+        console.warn('[API] Notícias indisponíveis, usando fallback estático:', err)
+        // Mantém o fallback estático já renderizado pelo render()
       })
   },
 
