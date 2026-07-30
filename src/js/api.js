@@ -1,4 +1,4 @@
-export const API_URL = "https://script.google.com/macros/s/AKfycbyogqd9TVeQc1bG4aO1hnOCFh2TCAavRkIJAcWtQEATXfj_iGpjclGrS8MrGvrMZ7as/exec"
+export const API_URL = "https://script.google.com/macros/s/AKfycbxInZqJe8WU0BiCouRMXPkhfs8k2sdXIdJ9trH5P1OBB41JMR09vgaglJo9s7A7vYpG/exec"
 
 /**
  * Transforma um item de notícia vindo da API v3.0 para o formato interno do frontend.
