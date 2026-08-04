@@ -54,7 +54,7 @@ export const noticiaPage = {
     const banca      = noticia.banca       || ''
     const categoria  = noticia.categoria   || 'Concursos'
     const tagsArr    = Array.isArray(noticia.tags) ? noticia.tags : (noticia.tags ? String(noticia.tags).split(',').map(t=>t.trim()) : [])
-    const linkExterno = noticia.linkOriginal || null
+    const linksList = Array.isArray(noticia.links) && noticia.links.length ? noticia.links : (noticia.linkOriginal ? [{ nome: 'Fonte Original', link: noticia.linkOriginal }] : [])
 
     const relatedHtml = related.length ? `
       <aside class="article-related">
@@ -148,12 +148,12 @@ export const noticiaPage = {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
               ` : ''}
-              ${linkExterno ? `
-                <a href="${linkExterno}" target="_blank" rel="noopener" class="article-cta-btn" aria-label="Fonte original">
-                  Fonte Original
+              ${(linksList || []).map(l => l.link ? `
+                <a href="${l.link}" target="_blank" rel="noopener" class="article-cta-btn" aria-label="${l.nome || 'Link externo'}">
+                  ${l.nome || 'Fonte Original'}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
-              ` : ''}
+              ` : '').join('')}
             </div>
           </article>
 
@@ -173,11 +173,12 @@ export const noticiaPage = {
                   Ver Concurso
                 </a>
               ` : ''}
-              ${linkExterno ? `
-                <a href="${linkExterno}" target="_blank" rel="noopener" class="article-sidebar-cta article-sidebar-cta--secondary" aria-label="Acessar fonte">
-                  Fonte Original
+              ${(linksList || []).map(l => l.link ? `
+                <a href="${l.link}" target="_blank" rel="noopener" class="article-sidebar-cta article-sidebar-cta--secondary" aria-label="${l.nome || 'Link externo'}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  ${l.nome || 'Fonte Original'}
                 </a>
-              ` : ''}
+              ` : '').join('')}
             </div>
 
             <div class="article-sidebar-card">

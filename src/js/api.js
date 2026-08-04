@@ -27,6 +27,18 @@ export function transformNoticia(item) {
     ? item.tags
     : (item.tags ? String(item.tags).split(',').map(t => t.trim()).filter(Boolean) : [])
 
+  // links: backend envia array de objetos [{nome, link}] ou string JSON, ou string simples no linkOriginal
+  let links = []
+  if (Array.isArray(item.links)) {
+    links = item.links
+  } else if (typeof item.links === 'string' && item.links.trim().startsWith('[')) {
+    try { links = JSON.parse(item.links) } catch (_) { links = [] }
+  } else if (typeof item.linkOriginal === 'string' && item.linkOriginal.trim().startsWith('[')) {
+    try { links = JSON.parse(item.linkOriginal) } catch (_) { links = [] }
+  } else if (item.linkOriginal) {
+    links = [{ nome: 'Fonte Original', link: item.linkOriginal }]
+  }
+
   return {
     // Identificação (numérica — diferente do fallback que usa string slug)
     id: item.id,
@@ -44,7 +56,8 @@ export function transformNoticia(item) {
     summary: item.resumo || '',
     content: item.conteudo || '',
     categoria: item.categoria || 'Concursos',
-    linkOriginal: item.linkOriginal || null,
+    linkOriginal: links[0]?.link || item.linkOriginal || null,
+    links: links,
     concursoId: item.concursoId || null,
     urlInstagram: item.urlInstagram || null,
     publicada: item.publicada,
