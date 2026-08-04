@@ -12,7 +12,7 @@ export const NEWS_DATA = [
     tags: ['concurso médico', 'Minas Gerais', 'ESF', 'clínico geral', 'PSF', 'médico família'],
     date: '2026-07-01',
     dateLabel: '01 julho 2026',
-    image: '/assets/news_big_card.webp',
+    image: './assets/news_big_card.webp',
     imageAlt: 'Concurso Médico em Delfinópolis MG com salário de R$ 18.831,45',
     summary: 'O município de Delfinópolis, em Minas Gerais, abre concurso público para médico com salário de R$ 18.831,45. Inscrições abertas até setembro de 2026.',
     content: `
@@ -55,7 +55,7 @@ export const NEWS_DATA = [
     tags: ['concurso médico', 'Minas Gerais', 'plantonista', 'médico plantonista'],
     date: '2026-06-30',
     dateLabel: '30 junho 2026',
-    image: '/assets/news_ponto_chique.webp',
+    image: './assets/news_ponto_chique.webp',
     imageAlt: 'Concurso Médico em Ponto Chique MG com salário de R$ 13.000,00',
     summary: 'Ponto Chique (MG) abre concurso para Médico Plantonista com remuneração de R$ 13.000,00 e 2 vagas disponíveis. Banca organizadora: Fadenor.',
     content: `
@@ -94,7 +94,7 @@ export const NEWS_DATA = [
     tags: ['concurso médico', 'Minas Gerais', 'clínico geral', 'psiquiatra', 'pediatra', 'especialista'],
     date: '2026-06-25',
     dateLabel: '25 junho 2026',
-    image: '/assets/news1.webp',
+    image: './assets/news1.webp',
     imageAlt: 'Concurso Médico em Dores do Indaiá MG com salário de R$ 18.702,17',
     summary: 'Dores do Indaiá abre concurso com múltiplas especialidades — Clínico Geral, Psiquiatra e Pediatra — com salário de até R$ 18.702,17.',
     content: `
@@ -131,7 +131,7 @@ export const NEWS_DATA = [
     tags: ['concurso médico', 'Minas Gerais', 'plantonista', 'resultado'],
     date: '2023-01-10',
     dateLabel: '10 janeiro 2023',
-    image: '/assets/news2.webp',
+    image: './assets/news2.webp',
     imageAlt: 'Concurso Médico Ponto Chique MG janeiro 2023',
     summary: 'Resultado do concurso de Ponto Chique de janeiro de 2023 para Médico Plantonista com salário de R$ 13.000,00.',
     content: `
@@ -158,7 +158,7 @@ export const NEWS_DATA = [
     tags: ['concurso médico', 'Minas Gerais', 'clínico geral', 'resultado', 'edição anterior'],
     date: '2023-01-29',
     dateLabel: '29 janeiro 2023',
-    image: '/assets/news3.webp',
+    image: './assets/news3.webp',
     imageAlt: 'Concurso Médico Dores do Indaiá MG janeiro 2023',
     summary: 'Edição de janeiro de 2023 do concurso médico de Dores do Indaiá com salário de R$ 18.702,17 para múltiplas especialidades.',
     content: `

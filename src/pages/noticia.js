@@ -45,7 +45,7 @@ export const noticiaPage = {
   },
 
   _buildPage(noticia, related) {
-    const img        = noticia.image       || '/assets/news_big_card.webp'
+    const img        = noticia.image       || './assets/news_big_card.webp'
     const imgAlt     = noticia.imageAlt    || noticia.title
     const dateStr    = noticia.date        || ''
     const dateLabel  = noticia.dateLabel   || formatDate(dateStr)
@@ -65,7 +65,7 @@ export const noticiaPage = {
         <div class="article-related-grid">
           ${related.map(n => `
             <a class="article-related-card" href="#/noticia/${n.id}" aria-label="${n.title}">
-              <div class="article-related-img" style="background: url('${n.image||'/assets/news1.webp'}') center/cover;" role="img" aria-label="${n.imageAlt||n.title}"></div>
+              <div class="article-related-img" style="background: url('${n.image||'./assets/news1.webp'}') center/cover;" role="img" aria-label="${n.imageAlt||n.title}"></div>
               <div class="article-related-body">
                 <span class="news-tag">NOTÍCIAS</span>
                 <p>${n.title}</p>

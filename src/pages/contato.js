@@ -7,7 +7,7 @@ export const contatoPage = {
       <div style="max-width: 1200px; margin: 64px auto; padding: 0 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;">
 
         <div class="contact-visuals" style="border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg); position: relative;">
-          <img src="/assets/contact.webp" alt="Atendimento ao cliente O Concurso Médico" width="480" height="600" loading="lazy" style="width: 100%; height: auto; display: block; aspect-ratio: 4/5; object-fit: cover;">
+          <img src="./assets/contact.webp" alt="Atendimento ao cliente O Concurso Médico" width="480" height="600" loading="lazy" style="width: 100%; height: auto; display: block; aspect-ratio: 4/5; object-fit: cover;">
           <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(15,79,73,0.95), transparent); padding: 40px; color: #fff;">
             <h2 style="margin: 0 0 8px 0; font-size: 28px;">Como podemos ajudar?</h2>
             <p style="margin: 0 0 24px 0; opacity: 0.9; font-size: 15px;">Nossa equipe está pronta para te atender. Mande uma mensagem e responderemos o mais rápido possível.</p>
