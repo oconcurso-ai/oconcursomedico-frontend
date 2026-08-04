@@ -1,7 +1,7 @@
 
 import { ESTADOS, STATUS_STYLE, STATUS_ORDER, REM_MIN_GLOBAL, REM_MAX_GLOBAL, renderCardHTML, currency } from './data.js'
 
-export function initConcursosPage(DATA) {
+export function initConcursosPage(DATA, targetConcursoId) {
   $(document).off('.concursos')
 
   const filters = { query: "", status: new Set(), estado: new Set(), cidade: new Set(), banca: new Set(), carga: new Set(), especialidade: new Set(), remMin: REM_MIN_GLOBAL, remMax: REM_MAX_GLOBAL }
@@ -391,12 +391,10 @@ export function initConcursosPage(DATA) {
     $("body").css("overflow", "")
   })
 
-  $("#cards").on("click", ".open-modal-btn", function () {
-    const id = $(this).data("id")
-    const concurso = DATA.find(c => String(c.id) === String(id))
+  function abrirModalConcurso(concurso) {
     if (!concurso) return
 
-    const st = STATUS_STYLE[concurso.status]
+    const st = STATUS_STYLE[concurso.status] || STATUS_STYLE['PREVISTO']
     const salaryValue = concurso.remuneracao != null ? currency(concurso.remuneracao) : "Não informado"
     const periodo = concurso.periodoInscricao || "Em breve"
     const prova = concurso.dataProva || "A definir"
@@ -420,7 +418,7 @@ export function initConcursosPage(DATA) {
       </a>
     `).join("")
 
-    if (!editaisHtml) editaisHtml = "<p style='color: var(--text-gray); font-size: 14px;'>Nenhum edital dispon\u00edvel no momento.</p>"
+    if (!editaisHtml) editaisHtml = "<p style='color: var(--text-gray); font-size: 14px;'>Nenhum edital disponível no momento.</p>"
 
     const html = `
       <div class="modal-header-info">
@@ -468,6 +466,12 @@ export function initConcursosPage(DATA) {
     $("#modalContent").html(html)
     $("#concursoModal").removeAttr("hidden")
     $("body").css("overflow", "hidden")
+  }
+
+  $("#cards").on("click", ".open-modal-btn", function () {
+    const id = $(this).data("id")
+    const concurso = DATA.find(c => String(c.id) === String(id))
+    if (concurso) abrirModalConcurso(concurso)
   })
 
   $("#closeModalBtn").on("click", function () {
@@ -483,4 +487,11 @@ export function initConcursosPage(DATA) {
   })
 
   renderAll()
+
+  if (targetConcursoId) {
+    const target = DATA.find(c => String(c.id) === String(targetConcursoId))
+    if (target) {
+      abrirModalConcurso(target)
+    }
+  }
 }

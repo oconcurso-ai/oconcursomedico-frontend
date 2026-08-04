@@ -143,7 +143,7 @@ export const noticiaPage = {
                 Voltar para Notícias
               </a>
               ${noticia.concursoId ? `
-                <a href="#/concursos" class="article-cta-btn" aria-label="Ver detalhes do concurso">
+                <a href="#/concursos/${noticia.concursoId}" class="article-cta-btn" aria-label="Ver detalhes do concurso">
                   Ver Concurso Completo
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
@@ -168,7 +168,7 @@ export const noticiaPage = {
                 ${dateLabel ? `<div><dt>Publicado em</dt><dd>${dateLabel}</dd></div>` : ''}
               </dl>
               ${noticia.concursoId ? `
-                <a href="#/concursos" class="article-sidebar-cta" aria-label="Ir para lista completa de concursos">
+                <a href="#/concursos/${noticia.concursoId}" class="article-sidebar-cta" aria-label="Ir para detalhes do concurso vinculado">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8"/></svg>
                   Ver Concurso
                 </a>

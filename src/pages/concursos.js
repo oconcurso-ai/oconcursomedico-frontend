@@ -147,12 +147,12 @@ export const concursosPage = {
     `
   },
 
-  mount() {
+  mount(targetConcursoId) {
     carregarDados()
-      .then(data => initConcursosPage(data))
+      .then(data => initConcursosPage(data, targetConcursoId))
       .catch(err => {
         console.error("[API] Falha ao carregar dados:", err)
-        initConcursosPage(DATA_FALLBACK)
+        initConcursosPage(DATA_FALLBACK, targetConcursoId)
       })
   }
 }
