@@ -1,4 +1,3 @@
-import { NEWS_BY_ID, NEWS_DATA } from '../js/news-data.js'
 import { carregarNoticias } from '../js/api.js'
 import { navigate } from '../router.js'
 
@@ -15,24 +14,12 @@ export const noticiaPage = {
   render(id) {
     this._currentId = id
 
-    // Tenta resolver o ID: primeiro como número (API), depois como string (fallback estático)
-    const numId = Number(id)
-    const staticNoticia = isNaN(numId) ? NEWS_BY_ID[id] : null
-
     // Se já temos a notícia resolvida de uma chamada anterior, usa direto
     if (this._resolvedNoticia && String(this._resolvedNoticia.id) === String(id)) {
       return this._buildPage(this._resolvedNoticia, [])
     }
 
-    // Se é um ID estático (string slug), renderiza sincrono com dados do fallback
-    if (staticNoticia) {
-      const related = NEWS_DATA
-        .filter(n => n.id !== staticNoticia.id && (n.cidade === staticNoticia.cidade || n.uf === staticNoticia.uf))
-        .slice(0, 3)
-      return this._buildPage(staticNoticia, related)
-    }
-
-    // ID numérico: renderiza skeleton e busca na API no mount()
+    // Renderiza skeleton e busca na API no mount()
     return `
     <div class="page-enter">
       <div class="article-wrapper">
@@ -54,7 +41,15 @@ export const noticiaPage = {
     const banca      = noticia.banca       || ''
     const categoria  = noticia.categoria   || 'Concursos'
     const tagsArr    = Array.isArray(noticia.tags) ? noticia.tags : (noticia.tags ? String(noticia.tags).split(',').map(t=>t.trim()) : [])
-    const linksList = Array.isArray(noticia.links) && noticia.links.length ? noticia.links : (noticia.linkOriginal ? [{ nome: 'Fonte Original', link: noticia.linkOriginal }] : [])
+    const rawLinks = Array.isArray(noticia.links) && noticia.links.length
+      ? noticia.links
+      : (noticia.linkOriginal ? [{ nome: 'Fonte Original', link: noticia.linkOriginal }] : [])
+
+    const validLinks = rawLinks.filter(l =>
+      l &&
+      typeof l.nome === 'string' && l.nome.trim() !== '' &&
+      typeof l.link === 'string' && l.link.trim() !== ''
+    )
 
     const relatedHtml = related.length ? `
       <aside class="article-related">
@@ -136,6 +131,30 @@ export const noticiaPage = {
             <!-- Tags -->
             ${tagsArr.length ? `<div class="article-tags">${tagsArr.map(t => `<span class="article-tag">${t}</span>`).join('')}</div>` : ''}
 
+            <!-- Área Dedicada: Links Úteis -->
+            ${validLinks.length ? `
+              <div class="article-useful-links">
+                <h3 class="article-useful-links-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  Links Úteis
+                </h3>
+                <div class="article-useful-links-grid">
+                  ${validLinks.map(l => `
+                    <a href="${l.link}" target="_blank" rel="noopener" class="useful-link-card">
+                      <div class="useful-link-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                      </div>
+                      <div class="useful-link-info">
+                        <span class="useful-link-title">${l.nome}</span>
+                        <span class="useful-link-url">${l.link}</span>
+                      </div>
+                      <svg class="useful-link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
             <!-- Navegação de artigo -->
             <div class="article-nav-footer">
               <a href="#/home" class="article-back-btn" aria-label="Voltar para notícias">
@@ -148,12 +167,6 @@ export const noticiaPage = {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
               ` : ''}
-              ${(linksList || []).map(l => l.link ? `
-                <a href="${l.link}" target="_blank" rel="noopener" class="article-cta-btn" aria-label="${l.nome || 'Link externo'}">
-                  ${l.nome || 'Fonte Original'}
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                </a>
-              ` : '').join('')}
             </div>
           </article>
 
@@ -173,12 +186,6 @@ export const noticiaPage = {
                   Ver Concurso
                 </a>
               ` : ''}
-              ${(linksList || []).map(l => l.link ? `
-                <a href="${l.link}" target="_blank" rel="noopener" class="article-sidebar-cta article-sidebar-cta--secondary" aria-label="${l.nome || 'Link externo'}">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                  ${l.nome || 'Fonte Original'}
-                </a>
-              ` : '').join('')}
             </div>
 
             <div class="article-sidebar-card">
@@ -215,27 +222,26 @@ export const noticiaPage = {
   },
 
   mount(id) {
-    const numId = Number(id)
-
-    // Se for ID numérico (da API), busca a notícia e re-renderiza
-    if (!isNaN(numId) && numId > 0) {
-      carregarNoticias().then(noticias => {
-        const noticia = noticias.find(n => n.id === numId)
-        if (!noticia) {
-          document.getElementById('app').innerHTML = this._notFoundHtml()
-          return
-        }
-        this._resolvedNoticia = noticia
-
-        // Related: mesma categoria ou mesma UF, excluindo a atual
-        const related = noticias
-          .filter(n => n.id !== numId && n.publicada && (n.categoria === noticia.categoria || n.uf === noticia.uf))
-          .slice(0, 3)
-
-        document.getElementById('app').innerHTML = this._buildPage(noticia, related)
-      }).catch(() => {
-        document.getElementById('app').innerHTML = this._notFoundHtml()
-      })
+    if (!id) {
+      document.getElementById('app').innerHTML = this._notFoundHtml()
+      return
     }
+    carregarNoticias().then(noticias => {
+      const noticia = (noticias || []).find(n => String(n.id) === String(id))
+      if (!noticia) {
+        document.getElementById('app').innerHTML = this._notFoundHtml()
+        return
+      }
+      this._resolvedNoticia = noticia
+
+      // Related: mesma categoria ou mesma UF, excluindo a atual
+      const related = noticias
+        .filter(n => String(n.id) !== String(id) && n.publicada && (n.categoria === noticia.categoria || n.uf === noticia.uf))
+        .slice(0, 3)
+
+      document.getElementById('app').innerHTML = this._buildPage(noticia, related)
+    }).catch(() => {
+      document.getElementById('app').innerHTML = this._notFoundHtml()
+    })
   }
 }
