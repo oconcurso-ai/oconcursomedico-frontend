@@ -1,5 +1,5 @@
 import { initConcursosPage } from '../js/app-logic.js'
-import { carregarDados } from '../js/api.js'
+import { carregarTudo } from '../js/api.js'
 import { DATA_FALLBACK } from '../js/data.js'
 
 
@@ -148,11 +148,11 @@ export const concursosPage = {
   },
 
   mount(targetConcursoId) {
-    carregarDados()
-      .then(data => initConcursosPage(data, targetConcursoId))
+    carregarTudo()
+      .then(({ concursos, noticias }) => initConcursosPage(concursos, targetConcursoId, noticias))
       .catch(err => {
         console.error("[API] Falha ao carregar dados:", err)
-        initConcursosPage(DATA_FALLBACK, targetConcursoId)
+        initConcursosPage(DATA_FALLBACK, targetConcursoId, [])
       })
   }
 }

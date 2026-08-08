@@ -81,3 +81,11 @@ export const SKELETON_CARDS_HTML = `
   <div class="card skeleton" style="min-height: 220px; background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%); background-size: 200% 100%; animation: skeleton-shine 1.5s infinite; pointer-events: none;"></div>
 `
 
+export const SKELETON_NEWS_HTML = `
+  <div class="news-card-big skeleton" style="grid-column: span 2; grid-row: span 2; background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%); background-size: 200% 100%; animation: skeleton-shine 1.5s infinite; pointer-events: none;"></div>
+  <div class="news-card-small skeleton" style="min-height: 220px; background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%); background-size: 200% 100%; animation: skeleton-shine 1.5s infinite; pointer-events: none;"></div>
+  <div class="news-card-small skeleton" style="min-height: 220px; background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%); background-size: 200% 100%; animation: skeleton-shine 1.5s infinite; pointer-events: none;"></div>
+  <div class="news-card-small skeleton" style="min-height: 220px; background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%); background-size: 200% 100%; animation: skeleton-shine 1.5s infinite; pointer-events: none;"></div>
+  <div class="news-card-small skeleton" style="min-height: 220px; background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%); background-size: 200% 100%; animation: skeleton-shine 1.5s infinite; pointer-events: none;"></div>
+`
+
