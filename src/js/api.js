@@ -10,7 +10,7 @@ export function transformNoticia(item) {
   let dateISO = ''
   let dateLabel = ''
   if (item.dataPublicacao) {
-    const raw = String(item.dataPublicacao)
+    const raw = String(item.dataPublicacao).trim()
     if (raw.includes('/')) {
       const [d, m, y] = raw.split('/')
       dateISO = `${y}-${m}-${d}`
@@ -18,8 +18,14 @@ export function transformNoticia(item) {
       dateISO = raw.substring(0, 10)
     }
     try {
-      dateLabel = new Date(dateISO + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
-    } catch(_) { dateLabel = dateISO }
+      const dObj = new Date(dateISO + 'T12:00:00')
+      if (!isNaN(dObj.getTime()) && dObj.getFullYear() >= 2000) {
+        dateLabel = dObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })
+      } else {
+        dateISO = ''
+        dateLabel = ''
+      }
+    } catch(_) { dateISO = ''; dateLabel = '' }
   }
 
   // tags: backend envia string separada por vírgula, ou array após serialização
