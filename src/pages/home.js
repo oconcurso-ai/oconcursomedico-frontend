@@ -96,7 +96,7 @@ export const homePage = {
 
     function renderNewsCard(n) {
       const href = '#/noticia/' + n.id
-      const img  = n.image || './assets/news1.webp'
+      const img  = n.image || './assets/novo.webp'
       const alt  = n.imageAlt || n.title
       return `
       <a href="${href}" class="news-card-small" style="text-decoration: none; color: inherit;">
@@ -111,7 +111,7 @@ export const homePage = {
 
     function renderFeaturedCard(n) {
       const href = '#/noticia/' + n.id
-      const img  = n.image || './assets/news_big_card.webp'
+      const img  = n.image || './assets/novo.webp'
       return `
       <a href="${href}" class="news-card-big" style="position:relative;overflow:hidden;text-decoration:none;color:#fff;min-height:464px;">
         <img src="${img}" alt="${n.imageAlt || n.title}" width="800" height="400" fetchpriority="high" decoding="async"

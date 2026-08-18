@@ -135,7 +135,7 @@ function fetchAll() {
   return _cachePromise
 }
 
-/** Carrega e transforma somente a lista de concursos */
+/** Carrega e transforma a lista de concursos */
 export function carregarDados() {
   return fetchAll().then(data => {
     const lista = Array.isArray(data.concursos) ? data.concursos : []
@@ -143,29 +143,54 @@ export function carregarDados() {
   })
 }
 
-/** Carrega e transforma somente as notícias publicadas */
+/** Carrega e transforma somente as notícias publicadas, ordenadas da mais recente para a mais antiga */
 export function carregarNoticias() {
   return fetchAll().then(data => {
     const items = (data.noticias && Array.isArray(data.noticias.items))
       ? data.noticias.items
       : []
     const transformadas = items.map(n => transformNoticia(n))
-    // Marca a primeira notícia (mais recente no topo após sort) como featured
+    
+    // Ordena da mais recente para a mais antiga (Data ISO decrescente, ID decrescente como desempate)
+    transformadas.sort((a, b) => {
+      const dateA = a.date || ''
+      const dateB = b.date || ''
+      const cmp = dateB.localeCompare(dateA)
+      if (cmp !== 0) return cmp
+      return (Number(b.id) || 0) - (Number(a.id) || 0)
+    })
+
+    // Marca a primeira notícia publicada (mais recente) como featured
     const publicadas = transformadas.filter(n => n.publicada)
     if (publicadas.length > 0) {
-      // A que tiver dataPublicacao mais recente é featured
-      publicadas.sort((a, b) => (b.date || '').localeCompare(a.date || ''))
       publicadas[0].featured = true
     }
     return transformadas
   })
 }
 
-/** Carrega tudo em paralelo e retorna { concursos, noticias } */
+/** Carrega tudo em paralelo e retorna { concursos, noticias } com notícias ordenadas */
 export function carregarTudo() {
-  return fetchAll().then(data => ({
-    concursos: (Array.isArray(data.concursos) ? data.concursos : []).map(transformConcurso),
-    noticias: ((data.noticias && Array.isArray(data.noticias.items))
+  return fetchAll().then(data => {
+    const transformadas = ((data.noticias && Array.isArray(data.noticias.items))
       ? data.noticias.items : []).map(n => transformNoticia(n))
-  }))
+    
+    transformadas.sort((a, b) => {
+      const dateA = a.date || ''
+      const dateB = b.date || ''
+      const cmp = dateB.localeCompare(dateA)
+      if (cmp !== 0) return cmp
+      return (Number(b.id) || 0) - (Number(a.id) || 0)
+    })
+
+    const publicadas = transformadas.filter(n => n.publicada)
+    if (publicadas.length > 0) {
+      publicadas[0].featured = true
+    }
+
+    return {
+      concursos: (Array.isArray(data.concursos) ? data.concursos : []).map(transformConcurso),
+      noticias: transformadas
+    }
+  })
 }
