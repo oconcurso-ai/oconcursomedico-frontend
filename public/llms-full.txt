@@ -13,5 +13,6 @@ Cada concurso público médico possui as seguintes propriedades principais:
 - **Status do Concurso**: Inscrições Abertas, Acaba Hoje, Prorrogadas, Previsto ou Encerrado.
 
 ## Contato Oficial
-- WhatsApp: +55 (21) 96713-7756
+- WhatsApp 1: +55 (11) 93460-9082
+- WhatsApp 2: +55 (11) 93097-1281
 - E-mail: contato@oconcursomedico.com

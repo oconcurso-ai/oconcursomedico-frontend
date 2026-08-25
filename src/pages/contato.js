@@ -12,10 +12,14 @@ export const contatoPage = {
             <h2 style="margin: 0 0 8px 0; font-size: 28px;">Como podemos ajudar?</h2>
             <p style="margin: 0 0 24px 0; opacity: 0.9; font-size: 15px;">Nossa equipe está pronta para te atender. Mande uma mensagem e responderemos o mais rápido possível.</p>
 
-            <div style="display: flex; gap: 24px;">
-              <a href="https://api.whatsapp.com/send?phone=5521967137756" target="_blank" rel="noopener noreferrer" aria-label="Falar via WhatsApp" style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #fff;">
+            <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+              <a href="https://api.whatsapp.com/send?phone=5511934609082" target="_blank" rel="noopener noreferrer" aria-label="Falar via WhatsApp (11) 93460-9082" style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #fff;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Ícone WhatsApp"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1s-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 0 1-1.9-1.2 7.2 7.2 0 0 1-1.3-1.6c-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.4a.4.4 0 0 0 0-.4c-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.7 2.7 0 0 0-.9 2c0 1.2.9 2.4 1 2.5.1.2 1.8 2.7 4.3 3.8a5.6 5.6 0 0 0 3.5.7 3 3 0 0 0 2-1.4 2.4 2.4 0 0 0 .2-1.4c-.1-.1-.3-.2-.5-.3z"/></svg>
-                WhatsApp
+                (11) 93460-9082
+              </a>
+              <a href="https://api.whatsapp.com/send?phone=5511930971281" target="_blank" rel="noopener noreferrer" aria-label="Falar via WhatsApp (11) 93097-1281" style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #fff;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Ícone WhatsApp"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20zm4.4-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1s-.6.8-.7.9-.3.2-.5.1a6.5 6.5 0 0 1-1.9-1.2 7.2 7.2 0 0 1-1.3-1.6c-.1-.2 0-.4.1-.5l.4-.4c.1-.1.1-.2.2-.4a.4.4 0 0 0 0-.4c-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.5a.9.9 0 0 0-.6.3 2.7 2.7 0 0 0-.9 2c0 1.2.9 2.4 1 2.5.1.2 1.8 2.7 4.3 3.8a5.6 5.6 0 0 0 3.5.7 3 3 0 0 0 2-1.4 2.4 2.4 0 0 0 .2-1.4c-.1-.1-.3-.2-.5-.3z"/></svg>
+                (11) 93097-1281
               </a>
               <a href="mailto:contato@oconcursomedico.com" aria-label="Enviar e-mail de contato" style="display: flex; align-items: center; gap: 8px; font-weight: 600; color: #fff;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Ícone E-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
