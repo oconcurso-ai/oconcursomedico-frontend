@@ -1,5 +1,14 @@
 export const API_URL = "https://script.google.com/macros/s/AKfycbyOO3_5cmla4VOvW6lvImUPdGKurBnXEGIuUNJO3S1SJfhK-2wYFs_gf-lnStW0MOBL/exec"
 
+export function normalizarImagemUrl(url) {
+  if (!url || typeof url !== 'string') return './assets/novo.webp'
+  const trimmed = url.trim()
+  if (!trimmed) return './assets/novo.webp'
+  if (trimmed.startsWith('/assets/')) return '.' + trimmed
+  if (trimmed.startsWith('assets/')) return './' + trimmed
+  return trimmed
+}
+
 /**
  * Transforma um item de notícia vindo da API v3.0 para o formato interno do frontend.
  * Mapeia os campos do backend (titulo, imagemUrl, dataPublicacao, tags[]) para os
@@ -56,8 +65,8 @@ export function transformNoticia(item) {
     tags: tagsArr,
     date: dateISO,
     dateLabel,
-    // Imagem: backend já converte Drive URLs para lh3.googleusercontent.com
-    image: item.imagemUrl || '',
+    // Imagem: normaliza caminhos de assets e aplica fallback padrão se vazia
+    image: normalizarImagemUrl(item.imagemUrl),
     imageAlt: item.titulo || '',
     summary: item.resumo || '',
     content: item.conteudo || '',

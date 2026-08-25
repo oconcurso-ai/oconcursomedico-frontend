@@ -92,6 +92,7 @@ export const noticiaPage = {
             alt="${imgAlt}"
             class="article-hero-img"
             fetchpriority="high"
+            onerror="this.onerror=null;this.src='./assets/novo.webp';"
             width="1200" height="480"
           >
           <div class="article-hero-overlay">

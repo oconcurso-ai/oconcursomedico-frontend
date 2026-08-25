@@ -18,7 +18,7 @@ export const homePage = {
     const newsHtml = hasNews ? `
       ${featuredNews ? `
       <a href="#/noticia/${featuredNews.id}" class="news-card-big" style="position: relative; overflow: hidden; text-decoration: none; color: #fff; min-height: 464px;">
-        <img src="${featuredNews.image}" alt="${featuredNews.imageAlt}" width="800" height="400" fetchpriority="high" decoding="async" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
+        <img src="${featuredNews.image || './assets/novo.webp'}" alt="${featuredNews.imageAlt || featuredNews.title}" width="800" height="400" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='./assets/novo.webp';" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;">
         <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,79,73,0.95), rgba(15,79,73,0.15)); z-index: 2; pointer-events: none;"></div>
         <h2 style="position: relative; z-index: 3;">${featuredNews.title}</h2>
       </a>
@@ -26,7 +26,7 @@ export const homePage = {
 
       ${otherNews.map(n => `
       <a href="#/noticia/${n.id}" class="news-card-small" style="text-decoration: none; color: inherit;">
-        <div class="news-card-small-img" role="img" style="background: url('${n.image}') center/cover;" aria-label="${n.imageAlt}"></div>
+        <div class="news-card-small-img" role="img" style="background-image: url('${n.image || './assets/novo.webp'}');" aria-label="${n.imageAlt || n.title}"></div>
         <div class="news-card-small-content">
           <span class="news-tag">NOTÍCIAS</span>
           <h3>${n.title}</h3>
@@ -115,6 +115,7 @@ export const homePage = {
       return `
       <a href="${href}" class="news-card-big" style="position:relative;overflow:hidden;text-decoration:none;color:#fff;min-height:464px;">
         <img src="${img}" alt="${n.imageAlt || n.title}" width="800" height="400" fetchpriority="high" decoding="async"
+             onerror="this.onerror=null;this.src='./assets/novo.webp';"
              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;">
         <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(15,79,73,0.95),rgba(15,79,73,0.15));z-index:2;pointer-events:none;"></div>
         <h2 style="position:relative;z-index:3;">${n.title}</h2>
