@@ -1,4 +1,4 @@
-import { carregarNoticias } from '../js/api.js'
+import { carregarNoticias, carregarDados } from '../js/api.js'
 import { navigate } from '../router.js'
 
 function formatDate(dateStr) {
@@ -10,13 +10,14 @@ function formatDate(dateStr) {
 export const noticiaPage = {
   _currentId: null,
   _resolvedNoticia: null,
+  _resolvedCursos: [],
 
   render(id) {
     this._currentId = id
 
     // Se já temos a notícia resolvida de uma chamada anterior, usa direto
     if (this._resolvedNoticia && String(this._resolvedNoticia.id) === String(id)) {
-      return this._buildPage(this._resolvedNoticia, [])
+      return this._buildPage(this._resolvedNoticia, [], this._resolvedCursos)
     }
 
     // Renderiza skeleton e busca na API no mount()
@@ -31,7 +32,7 @@ export const noticiaPage = {
     </div>`
   },
 
-  _buildPage(noticia, related) {
+  _buildPage(noticia, related, cursos) {
     const img        = noticia.image       || './assets/novo.webp'
     const imgAlt     = noticia.imageAlt    || noticia.title
     const dateStr    = noticia.date        || ''
@@ -50,6 +51,22 @@ export const noticiaPage = {
       typeof l.nome === 'string' && l.nome.trim() !== '' &&
       typeof l.link === 'string' && l.link.trim() !== ''
     )
+
+    const cursosRec = Array.isArray(cursos) ? cursos.filter(c => c && c.link) : []
+    const cursosHtml = cursosRec.length ? cursosRec.map(cr => `
+        <a href="${cr.link}" target="_blank" rel="noopener" class="article-sidebar-curso">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg>
+          <span>${cr.nome}</span>
+          <svg class="useful-link-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>`).join('') : ''
+
+    const cursosCardHtml = cursosHtml ? `
+        <div class="article-sidebar-card">
+          <h3>Cursos Recomendados</h3>
+          <p style="font-size: 14px; color: var(--muted); margin: 0 0 16px;">Cursos e materiais de estudo recomendados para este certame.</p>
+          <div class="article-sidebar-cursos">${cursosHtml}</div>
+        </div>` : ''
+
 
     const relatedHtml = related.length ? `
       <aside class="article-related">
@@ -197,6 +214,8 @@ export const noticiaPage = {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
+
+            ${cursosCardHtml}
           </aside>
 
         </div>
@@ -227,7 +246,7 @@ export const noticiaPage = {
       document.getElementById('app').innerHTML = this._notFoundHtml()
       return
     }
-    carregarNoticias().then(noticias => {
+    Promise.all([carregarNoticias(), carregarDados().catch(() => [])]).then(([noticias, concursos]) => {
       const noticia = (noticias || []).find(n => String(n.id) === String(id))
       if (!noticia) {
         document.getElementById('app').innerHTML = this._notFoundHtml()
@@ -235,12 +254,17 @@ export const noticiaPage = {
       }
       this._resolvedNoticia = noticia
 
+      // Cursos recomendados vindos do concurso vinculado (se houver)
+      const linked = (concursos || []).find(c => noticia.concursoId && String(c.id) === String(noticia.concursoId))
+      const cursos = (linked && Array.isArray(linked.cursosRecomendados)) ? linked.cursosRecomendados : []
+      this._resolvedCursos = cursos
+
       // Related: mesma categoria ou mesma UF, excluindo a atual
       const related = noticias
         .filter(n => String(n.id) !== String(id) && n.publicada && (n.categoria === noticia.categoria || n.uf === noticia.uf))
         .slice(0, 3)
 
-      document.getElementById('app').innerHTML = this._buildPage(noticia, related)
+      document.getElementById('app').innerHTML = this._buildPage(noticia, related, cursos)
     }).catch(() => {
       document.getElementById('app').innerHTML = this._notFoundHtml()
     })

@@ -42,6 +42,23 @@ function abrirModalConcurso(concurso, noticias) {
   `).join("")
 
   if (!editaisHtml) editaisHtml = "<p style='color: var(--text-gray); font-size: 14px;'>Nenhum edital disponível no momento.</p>"
+  let cursosHtml = (concurso.cursosRecomendados || []).filter(c => c && c.link).map(c => `
+    <a href="${c.link}" target="_blank" rel="noopener noreferrer" class="edital-item">
+      <div class="edital-item-left">
+        <div class="edital-item-icon" style="background: rgba(15, 118, 110, 0.1); color: var(--teal-700);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg>
+        </div>
+        ${c.nome}
+      </div>
+      <div class="edital-item-right">
+        Acessar
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </div>
+    </a>
+  `).join("")
+
+  if (!cursosHtml) cursosHtml = ""
+
 
   const noticiasRelacionadas = (noticias || [])
     .filter(n => n.publicada && String(n.concursoId) === String(concurso.id))
@@ -110,6 +127,14 @@ function abrirModalConcurso(concurso, noticias) {
         ${editaisHtml}
       </div>
     </div>
+
+    ${cursosHtml ? `
+    <div class="modal-section">
+      <h3>Cursos Recomendados</h3>
+      <div class="modal-editais-list">
+        ${cursosHtml}
+      </div>
+    </div>` : ''}
     ${noticiasHtml}
   `
 

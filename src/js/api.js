@@ -113,6 +113,7 @@ export function transformConcurso(item) {
     dataProva: item.dataProva || "A definir",
     especialidade: Array.isArray(item.especialidade) ? item.especialidade : (item.especialidade ? [item.especialidade] : []),
     editais: Array.isArray(item.editais) ? item.editais : [],
+    cursosRecomendados: Array.isArray(item.cursosRecomendados) ? item.cursosRecomendados : [],
     urlBanca: item.urlBanca || null,
     urlSite: item.urlSite || null,
     urlImagem: item.urlImagem || null,

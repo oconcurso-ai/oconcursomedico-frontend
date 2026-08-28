@@ -11,6 +11,7 @@ Cada concurso público médico possui as seguintes propriedades principais:
 - **Remuneração**: Valor nominal inicial da vaga (R$).
 - **Carga Horária**: Horas semanais exigidas (ex.: 20h, 40h, plantões de 12x36).
 - **Status do Concurso**: Inscrições Abertas, Acaba Hoje, Prorrogadas, Previsto ou Encerrado.
+- **Cursos Recomendados**: Lista de cursos preparatórios recomendados para o certame, cada um com nome e URL de acesso. Aparecem na página da notícia e no modal de detalhes do concurso.
 
 ## Contato Oficial
 - WhatsApp 1: +55 (11) 93460-9082

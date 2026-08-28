@@ -2116,6 +2116,38 @@ footer.site {
   background: var(--teal-50);
   border-color: var(--teal-500);
 }
+.article-sidebar-cursos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.article-sidebar-curso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.article-sidebar-curso svg:first-child {
+  flex-shrink: 0;
+  color: var(--teal-600);
+}
+.article-sidebar-curso .useful-link-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--teal-600);
+}
+.article-sidebar-curso:hover {
+  border-color: var(--teal-500);
+  background: var(--teal-50);
+}
 
 .article-related {
   margin-top: 64px;
