@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+
+# OS & Logs
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE & Tooling
+.vscode/
+.idea/
+.playwright-mcp/
+
+# Environments
+.env
+.env.*
+!.env.example
